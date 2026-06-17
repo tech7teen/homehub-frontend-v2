@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance - HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="index.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- Populated by JavaScript based on role -->
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;" id="page-title">Maintenance</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Tenant View -->
+                <div id="tenant-view" style="display: none;">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Request Maintenance</h2>
+
+                    <!-- New Request Form -->
+                    <section style="margin-bottom: var(--spacing-xl);">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Create New Request</h3>
+                        <div class="card">
+                            <form style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                                <div class="form-group">
+                                    <label for="issue-category">Issue Category</label>
+                                    <select id="issue-category" name="category">
+                                        <option value="">Select a category</option>
+                                        <option value="plumbing">🚰 Plumbing</option>
+                                        <option value="electrical">⚡ Electrical</option>
+                                        <option value="carpentry">🔨 Carpentry</option>
+                                        <option value="painting">🎨 Painting</option>
+                                        <option value="general">🔧 General Repairs</option>
+                                        <option value="appliance">🔌 Appliance Repair</option>
+                                        <option value="other">📋 Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="issue-title">Issue Title</label>
+                                    <input type="text" id="issue-title" placeholder="e.g., Leaking kitchen tap" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="issue-description">Description</label>
+                                    <textarea id="issue-description" placeholder="Provide details about the issue..." style="height: 120px;"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="issue-priority">Priority</label>
+                                    <select id="issue-priority" name="priority">
+                                        <option value="low">Low - Can wait 2+ weeks</option>
+                                        <option value="medium" selected>Medium - Within 1 week</option>
+                                        <option value="high">High - Urgent (1-2 days)</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-full" onclick="handleSubmitRequest(event)">
+                                    Submit Request
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- Pending Requests -->
+                    <section style="margin-bottom: var(--spacing-xl);">
+                        <h3 style="margin-bottom: var(--spacing-lg);">My Requests</h3>
+                        <div id="tenant-requests">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Suggested Providers -->
+                    <section>
+                        <h3 style="margin-bottom: var(--spacing-lg);">Recommended Service Providers</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">Trusted providers verified by building residents</p>
+                        <div id="suggested-providers" class="grid grid-2 gap-lg">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Landlord View -->
+                <div id="landlord-view" style="display: none;">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Maintenance Management</h2>
+
+                    <!-- Statistics -->
+                    <section style="margin-bottom: var(--spacing-xl);">
+                        <div class="grid grid-4 gap-lg">
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Pending</p>
+                                <h2 id="pending-count" style="margin: var(--spacing-md) 0; color: var(--color-warning);">1</h2>
+                            </div>
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">In Progress</p>
+                                <h2 id="progress-count" style="margin: var(--spacing-md) 0; color: var(--color-info);">1</h2>
+                            </div>
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Completed</p>
+                                <h2 id="completed-count" style="margin: var(--spacing-md) 0; color: var(--color-success);">2</h2>
+                            </div>
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Total Cost</p>
+                                <h2 id="total-cost" style="margin: var(--spacing-md) 0; color: var(--color-accent);">KES 5,500</h2>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- All Requests -->
+                    <section>
+                        <h3 style="margin-bottom: var(--spacing-lg);">All Maintenance Requests</h3>
+                        <div id="landlord-requests">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load maintenance page based on role
+         */
+        function loadMaintenancePage() {
+            const role = AuthManager.getRole();
+            protectDashboard(role);
+
+            initializeSidebar(role);
+
+            if (role === 'tenant') {
+                loadTenantMaintenance();
+            } else if (role === 'landlord') {
+                loadLandlordMaintenance();
+            }
+        }
+
+        /**
+         * Initialize sidebar based on role
+         */
+        function initializeSidebar(role) {
+            const nav = document.getElementById('sidebar-nav');
+            let html = '';
+
+            if (role === 'tenant') {
+                document.getElementById('page-title').textContent = 'Request Maintenance';
+                html = `
+                    <a href="dashboard-tenant.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💳</span> Pay Rent
+                    </a>
+                    <a href="maintenance.html" class="nav-link active">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'landlord') {
+                document.getElementById('page-title').textContent = 'Maintenance Management';
+                html = `
+                    <a href="dashboard-landlord.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💰</span> Collections
+                    </a>
+                    <a href="maintenance.html" class="nav-link active">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">📧</span> Communications
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            }
+
+            nav.innerHTML = html;
+        }
+
+        /**
+         * Load tenant maintenance view
+         */
+        function loadTenantMaintenance() {
+            document.getElementById('tenant-view').style.display = 'block';
+            document.getElementById('landlord-view').style.display = 'none';
+
+            const data = mockMaintenanceData;
+
+            // Load requests
+            let requestsHtml = '';
+            data.requests.forEach(request => {
+                const statusBadge = request.status === 'completed'
+                    ? '<span class="badge badge-success">✓ Completed</span>'
+                    : '<span class="badge badge-info">→ In Progress</span>';
+
+                requestsHtml += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <h4>${request.issue}</h4>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                                    ${request.category} • ${formatDate(request.reportedDate)}
+                                </p>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        <p style="color: var(--color-text-secondary); margin: var(--spacing-md) 0;">
+                            ${request.description}
+                        </p>
+                        ${request.assignedProvider ? `
+                            <div style="background: var(--color-bg); padding: var(--spacing-md); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-md);">
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Assigned to:</p>
+                                <p style="font-weight: bold; margin: var(--spacing-sm) 0;">${request.assignedProvider}</p>
+                                ${request.status === 'in-progress' && request.estimatedCompletion ? `
+                                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                                        Expected: ${formatDate(request.estimatedCompletion)}
+                                    </p>
+                                ` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            document.getElementById('tenant-requests').innerHTML = requestsHtml;
+
+            // Load suggested providers
+            let providersHtml = '';
+            data.suggestedProviders.forEach(provider => {
+                providersHtml += `
+                    <div class="card">
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-sm);">
+                                <h4 style="margin: 0;">${provider.name}</h4>
+                                ${provider.featured ? '<span class="badge badge-primary">⭐ Featured</span>' : ''}
+                            </div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">${provider.category}</p>
+                        </div>
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <span class="text-accent text-bold">⭐ ${provider.rating}</span>
+                            <span style="color: var(--color-text-secondary); font-size: 0.85em;"> (${provider.reviews} reviews)</span>
+                        </div>
+                        <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md);">
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                                📱 Response time: ${provider.responseTime}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('suggested-providers').innerHTML = providersHtml;
+        }
+
+        /**
+         * Load landlord maintenance view
+         */
+        function loadLandlordMaintenance() {
+            document.getElementById('tenant-view').style.display = 'none';
+            document.getElementById('landlord-view').style.display = 'block';
+
+            const data = mockMaintenanceData;
+            const requests = data.requests;
+
+            // Count status
+            const pending = requests.filter(r => r.status === 'pending').length;
+            const inProgress = requests.filter(r => r.status === 'in-progress').length;
+            const completed = requests.filter(r => r.status === 'completed').length;
+            const totalCost = 5500; // From mock data
+
+            document.getElementById('pending-count').textContent = pending;
+            document.getElementById('progress-count').textContent = inProgress;
+            document.getElementById('completed-count').textContent = completed;
+            document.getElementById('total-cost').textContent = formatCurrency(totalCost);
+
+            // Load all requests
+            let requestsHtml = '';
+            const dashboard = mockLandlordDashboard;
+            
+            dashboard.maintenanceRequests.forEach(request => {
+                const statusBadge = request.status === 'completed'
+                    ? '<span class="badge badge-success">✓ Completed</span>'
+                    : '<span class="badge badge-warning">→ In Progress</span>';
+
+                requestsHtml += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <h4>${request.issue}</h4>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                                    ${request.property} • ${request.unit}
+                                </p>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--color-border);">
+                            <div>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Reported</p>
+                                <p style="font-weight: bold; margin: 0;">${formatDate(request.reportedDate)}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Cost</p>
+                                <p style="font-weight: bold; margin: 0; color: var(--color-accent);">
+                                    ${formatCurrency(request.estimatedCost || request.actualCost || 0)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('landlord-requests').innerHTML = requestsHtml;
+        }
+
+        /**
+         * Handle maintenance request submission
+         */
+        function handleSubmitRequest(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('issue-category').value;
+            const title = document.getElementById('issue-title').value;
+            const description = document.getElementById('issue-description').value;
+            const priority = document.getElementById('issue-priority').value;
+
+            if (!category || !title) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            alert('✓ Request submitted successfully!\n\nYour maintenance request has been submitted. Management will review and assign a service provider within 24 hours.');
+            
+            // Reset form
+            document.getElementById('issue-title').value = '';
+            document.getElementById('issue-description').value = '';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMaintenancePage();
+        });
+    </script>
+</body>
+</html>

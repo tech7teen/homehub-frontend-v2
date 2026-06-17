@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="index.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- Populated by JavaScript based on role -->
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;" id="page-title">Payments</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <a href="#" onclick="window.history.back()" class="text-secondary">← Back</a>
+                </div>
+
+                <!-- Role-specific content -->
+                <div id="tenant-view" style="display: none;">
+                    <!-- TENANT VIEW: Pay Rent -->
+                    <h2 style="margin-bottom: var(--spacing-lg);">Pay Your Rent</h2>
+
+                    <!-- Payment Due Card -->
+                    <div style="margin-bottom: var(--spacing-xl);">
+                        <div class="grid grid-2 gap-lg">
+                            <div class="card" style="background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-surface) 100%);">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Amount Due</p>
+                                <h2 id="tenant-amount-due" style="margin: var(--spacing-md) 0; color: var(--color-accent);">KES 15,000</h2>
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">Due: <span id="tenant-due-date">5 Jul 2026</span></p>
+                                <button class="btn btn-primary btn-full" onclick="alert('Payment processing feature - API integration needed')">
+                                    Pay Now
+                                </button>
+                            </div>
+
+                            <div class="card">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Payment Methods</p>
+                                <div style="margin-top: var(--spacing-md);">
+                                    <div style="padding: var(--spacing-md); background: var(--color-bg); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-sm);">
+                                        <p style="margin: 0; font-weight: bold;">📱 M-Pesa</p>
+                                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Quick & secure mobile money</p>
+                                    </div>
+                                    <div style="padding: var(--spacing-md); background: var(--color-bg); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-sm);">
+                                        <p style="margin: 0; font-weight: bold;">🏦 Bank Transfer</p>
+                                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Direct bank deposit</p>
+                                    </div>
+                                    <div style="padding: var(--spacing-md); background: var(--color-bg); border-radius: var(--border-radius-md);">
+                                        <p style="margin: 0; font-weight: bold;">✓ Cheque</p>
+                                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Check enclosed</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment History -->
+                    <section style="margin-bottom: var(--spacing-xl);">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Payment History</h3>
+                        <div id="tenant-history" class="grid grid-1 gap-lg">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+                </div>
+
+                <div id="landlord-view" style="display: none;">
+                    <!-- LANDLORD VIEW: Collections -->
+                    <h2 style="margin-bottom: var(--spacing-lg);">Collections Dashboard</h2>
+
+                    <!-- Collections Summary -->
+                    <section style="margin-bottom: var(--spacing-xl);">
+                        <div class="grid grid-4 gap-lg">
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Amount Due</p>
+                                <h2 id="landlord-due" style="margin: var(--spacing-md) 0; color: var(--color-accent);">KES 165,000</h2>
+                            </div>
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Collected</p>
+                                <h2 id="landlord-collected" style="margin: var(--spacing-md) 0; color: var(--color-success);">KES 150,000</h2>
+                            </div>
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Collection Rate</p>
+                                <h2 id="landlord-rate" style="margin: var(--spacing-md) 0; color: var(--color-success);">90.9%</h2>
+                            </div>
+                            <div class="card" style="text-align: center;">
+                                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Overdue</p>
+                                <h2 id="landlord-overdue" style="margin: var(--spacing-md) 0; color: var(--color-error);">KES 15,000</h2>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Collections by Property -->
+                    <section style="margin-bottom: var(--spacing-xl);">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Collections by Property</h3>
+                        <div id="landlord-by-property" class="grid grid-3 gap-lg">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Tenant Payment Status -->
+                    <section style="margin-bottom: var(--spacing-xl);">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Tenant Payment Status</h3>
+                        <div id="landlord-tenants">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load payments page based on role
+         */
+        function loadPaymentsPage() {
+            protectDashboard(AuthManager.getRole() || 'tenant');
+            const role = AuthManager.getRole();
+            
+            // Initialize sidebar
+            initializeSidebar(role);
+
+            if (role === 'tenant') {
+                loadTenantPayments();
+            } else if (role === 'landlord') {
+                loadLandlordCollections();
+            } else {
+                // Default to tenant
+                loadTenantPayments();
+            }
+        }
+
+        /**
+         * Initialize sidebar navigation
+         */
+        function initializeSidebar(role) {
+            const nav = document.getElementById('sidebar-nav');
+            let html = '';
+
+            if (role === 'tenant') {
+                document.getElementById('page-title').textContent = 'Pay Rent';
+                html = `
+                    <a href="dashboard-tenant.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link active">
+                        <span class="nav-icon">💳</span> Pay Rent
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'landlord') {
+                document.getElementById('page-title').textContent = 'Collections';
+                html = `
+                    <a href="dashboard-landlord.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link active">
+                        <span class="nav-icon">💰</span> Collections
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">📧</span> Communications
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            }
+
+            nav.innerHTML = html;
+        }
+
+        /**
+         * Load tenant payment view
+         */
+        function loadTenantPayments() {
+            document.getElementById('tenant-view').style.display = 'block';
+            document.getElementById('landlord-view').style.display = 'none';
+
+            const data = mockPaymentsData.tenant;
+            const dashboard = mockTenantDashboard;
+
+            document.getElementById('tenant-amount-due').textContent = formatCurrency(data.amountDue);
+            document.getElementById('tenant-due-date').textContent = formatDate(data.dueDate);
+
+            // Load payment history
+            let html = '';
+            data.history.forEach(payment => {
+                html += `
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="font-weight: bold; margin: 0;">Payment</p>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                    ${formatDate(payment.date)}
+                                </p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="font-size: 1.2em; font-weight: bold; margin: 0; color: var(--color-accent);">
+                                    ${formatCurrency(payment.amount)}
+                                </p>
+                                <p style="margin: 0;">${getStatusBadge(payment.status)}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('tenant-history').innerHTML = html;
+        }
+
+        /**
+         * Load landlord collections view
+         */
+        function loadLandlordCollections() {
+            document.getElementById('tenant-view').style.display = 'none';
+            document.getElementById('landlord-view').style.display = 'block';
+
+            const dashboard = mockLandlordDashboard;
+            const data = mockPaymentsData.landlord;
+
+            document.getElementById('landlord-due').textContent = formatCurrency(dashboard.collections.thisMonth.due);
+            document.getElementById('landlord-collected').textContent = formatCurrency(dashboard.collections.thisMonth.collected);
+            document.getElementById('landlord-rate').textContent = '90.9%';
+            document.getElementById('landlord-overdue').textContent = formatCurrency(dashboard.collections.thisMonth.overdue);
+
+            // Load collections by property
+            let propertyHtml = '';
+            data.byProperty.forEach(prop => {
+                const collected = prop.collected;
+                const due = prop.due;
+                const rate = Math.round((collected / due) * 100);
+
+                propertyHtml += `
+                    <div class="card">
+                        <h4>${prop.property}</h4>
+                        <div style="margin: var(--spacing-md) 0;">
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Collections</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-xs) 0;">
+                                ${formatCurrency(collected)} / ${formatCurrency(due)}
+                            </p>
+                        </div>
+                        <div style="background: var(--color-bg); border-radius: var(--border-radius-md); height: 8px; overflow: hidden;">
+                            <div style="background: var(--color-accent); height: 100%; width: ${rate}%;"></div>
+                        </div>
+                        <p style="color: var(--color-accent); font-weight: bold; margin: var(--spacing-md) 0 0 0;">${rate}% collected</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('landlord-by-property').innerHTML = propertyHtml;
+
+            // Load tenant payment status
+            let tenantHtml = '';
+            dashboard.tenants.forEach(tenant => {
+                const statusColor = tenant.paymentStatus === 'on-time' 
+                    ? 'color: var(--color-success);' 
+                    : 'color: var(--color-error);';
+
+                tenantHtml += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <h4 style="margin: 0;">${tenant.name}</h4>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                    ${tenant.property} • ${tenant.unit}
+                                </p>
+                            </div>
+                            <span style="${statusColor} font-weight: bold;">
+                                ${tenant.paymentStatus === 'on-time' ? '✓ On Time' : '! Overdue'}
+                            </span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+                            <div>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Due</p>
+                                <p style="font-weight: bold; margin: 0; color: var(--color-accent);">
+                                    ${formatCurrency(tenant.rentDue)}
+                                </p>
+                            </div>
+                            <div>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Due Date</p>
+                                <p style="font-weight: bold; margin: 0;">
+                                    ${formatDate(tenant.dueDate)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('landlord-tenants').innerHTML = tenantHtml;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPaymentsPage();
+        });
+    </script>
+</body>
+</html>

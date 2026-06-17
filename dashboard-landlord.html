@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Landlord | HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="dashboard-landlord.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-landlord.html" class="nav-link active">
+                    <span class="nav-icon">🏠</span> Dashboard
+                </a>
+                <a href="payments.html" class="nav-link">
+                    <span class="nav-icon">💰</span> Collections
+                </a>
+                <a href="maintenance.html" class="nav-link">
+                    <span class="nav-icon">🔧</span> Maintenance
+                </a>
+                <a href="neighbourhood.html" class="nav-link">
+                    <span class="nav-icon">📧</span> Communications
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <span class="nav-icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;">Dashboard</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Welcome Section -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <h2 id="welcome-name">Portfolio Overview</h2>
+                    <p style="color: var(--color-text-secondary);">Manage your rental properties efficiently</p>
+                </div>
+
+                <!-- Portfolio Summary (4-column grid) -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <div class="grid grid-4 gap-lg">
+                        <!-- Total Properties -->
+                        <div class="card" style="text-align: center;">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Total Properties</p>
+                            <h2 id="total-properties" style="margin: var(--spacing-md) 0; color: var(--color-accent);">12</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">Across Nairobi</p>
+                        </div>
+
+                        <!-- Occupancy Rate -->
+                        <div class="card" style="text-align: center;">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Occupancy Rate</p>
+                            <h2 id="occupancy-rate" style="margin: var(--spacing-md) 0; color: var(--color-success);">91.7%</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">11 of 12 occupied</p>
+                        </div>
+
+                        <!-- Total Tenants -->
+                        <div class="card" style="text-align: center;">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Total Tenants</p>
+                            <h2 id="total-tenants" style="margin: var(--spacing-md) 0; color: var(--color-info);">11</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">Active leases</p>
+                        </div>
+
+                        <!-- Monthly Revenue -->
+                        <div class="card" style="text-align: center;">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Monthly Revenue</p>
+                            <h2 id="monthly-revenue" style="margin: var(--spacing-md) 0; color: var(--color-accent);">KES 882K</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">This month</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Collections Status -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Collections Status</h3>
+                    <div class="grid grid-3 gap-lg">
+                        <!-- Amount Due -->
+                        <div class="card">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Amount Due</p>
+                            <h2 id="amount-due" style="margin: var(--spacing-md) 0; color: var(--color-accent);">KES 165,000</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">Expected this month</p>
+                        </div>
+
+                        <!-- Collected This Month -->
+                        <div class="card">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Collected</p>
+                            <h2 id="amount-collected" style="margin: var(--spacing-md) 0; color: var(--color-success);">KES 150,000</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">90.9% collection rate</p>
+                        </div>
+
+                        <!-- Overdue -->
+                        <div class="card">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Overdue</p>
+                            <h2 id="amount-overdue" style="margin: var(--spacing-md) 0; color: var(--color-error);">KES 15,000</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">1 tenant overdue</p>
+                            <a href="payments.html" class="btn btn-error btn-small btn-full" style="margin-top: var(--spacing-md);">Send Reminders</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Properties Overview -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Your Properties</h3>
+                    <div id="properties-section">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Overdue Tenants Alert -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Attention Needed</h3>
+                    <div id="overdue-section">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Maintenance Requests -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Recent Maintenance</h3>
+                    <div id="maintenance-section">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load landlord dashboard
+         */
+        function loadLandlordDashboard() {
+            const dashboard = mockLandlordDashboard;
+            const user = mockUsers.landlord;
+
+            // Update welcome
+            document.getElementById('welcome-name').textContent = `Welcome, ${user.name}!`;
+
+            // Update portfolio summary
+            document.getElementById('total-properties').textContent = dashboard.portfolio.totalProperties;
+            document.getElementById('occupancy-rate').textContent = dashboard.portfolio.occupancyRate + '%';
+            document.getElementById('total-tenants').textContent = dashboard.portfolio.totalTenants;
+            document.getElementById('monthly-revenue').textContent = formatCurrency(
+                dashboard.properties.reduce((sum, p) => sum + p.monthlyRevenue, 0)
+            );
+
+            // Update collections
+            document.getElementById('amount-due').textContent = formatCurrency(dashboard.collections.thisMonth.due);
+            document.getElementById('amount-collected').textContent = formatCurrency(dashboard.collections.thisMonth.collected);
+            document.getElementById('amount-overdue').textContent = formatCurrency(dashboard.collections.thisMonth.overdue);
+
+            // Load properties
+            loadPropertiesSection(dashboard.properties);
+
+            // Load overdue tenants
+            loadOverdueSection(dashboard.overdueTenants);
+
+            // Load maintenance
+            loadMaintenanceSection(dashboard.maintenanceRequests);
+        }
+
+        /**
+         * Load properties section
+         */
+        function loadPropertiesSection(properties) {
+            const section = document.getElementById('properties-section');
+            
+            let html = '';
+            properties.forEach(property => {
+                const occupancyColor = getOccupancyColor(property.occupancyRate);
+                html += `
+                    <div class="card" style="margin-bottom: var(--spacing-lg); cursor: pointer;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                            <div>
+                                <h4 style="margin: 0;">${property.name}</h4>
+                                <p style="color: var(--color-text-secondary); margin: var(--spacing-sm) 0; font-size: 0.9em;">
+                                    ${property.address}
+                                </p>
+                            </div>
+                            <span class="badge badge-primary">Active</span>
+                        </div>
+
+                        <div class="grid grid-3 gap-lg">
+                            <div>
+                                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Units</p>
+                                <h3 style="margin: var(--spacing-sm) 0; color: var(--color-accent);">
+                                    ${property.occupiedUnits}/${property.totalUnits}
+                                </h3>
+                            </div>
+                            <div>
+                                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Occupancy</p>
+                                <h3 style="margin: var(--spacing-sm) 0; color: ${occupancyColor};">
+                                    ${property.occupancyRate}%
+                                </h3>
+                            </div>
+                            <div>
+                                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Rent/Unit</p>
+                                <h3 style="margin: var(--spacing-sm) 0; color: var(--color-success);">
+                                    ${formatCurrency(property.rentPerUnit)}
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md); margin-top: var(--spacing-md);">
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Monthly Revenue</p>
+                            <p style="font-size: 1.2em; font-weight: bold; color: var(--color-accent); margin: 0;">
+                                ${formatCurrency(property.monthlyRevenue)}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load overdue tenants section
+         */
+        function loadOverdueSection(overdueTenants) {
+            const section = document.getElementById('overdue-section');
+            
+            if (!overdueTenants || overdueTenants.length === 0) {
+                section.innerHTML = '<div class="alert alert-success">✓ No overdue payments - Great work!</div>';
+                return;
+            }
+
+            let html = '';
+            overdueTenants.forEach(tenant => {
+                html += `
+                    <div class="alert alert-error" style="border-left: 4px solid var(--color-error); margin-bottom: var(--spacing-md);">
+                        <strong>${tenant.name}</strong> - ${tenant.property}, ${tenant.unit}<br>
+                        <span style="font-size: 0.9em;">
+                            ${tenant.daysOverdue} days overdue • ${formatCurrency(tenant.amountDue)} due
+                        </span>
+                        <button class="btn btn-error btn-small" style="margin-top: var(--spacing-sm); width: 100%;">
+                            Send Payment Reminder
+                        </button>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load maintenance section
+         */
+        function loadMaintenanceSection(requests) {
+            const section = document.getElementById('maintenance-section');
+            
+            if (!requests || requests.length === 0) {
+                section.innerHTML = '<p style="color: var(--color-text-secondary);">No pending maintenance</p>';
+                return;
+            }
+
+            let html = '';
+            requests.forEach(request => {
+                const statusBadge = request.status === 'completed' 
+                    ? '<span class="badge badge-success">✓ Completed</span>'
+                    : '<span class="badge badge-warning">→ In Progress</span>';
+
+                html += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <h4>${request.issue}</h4>
+                                <p style="color: var(--color-text-secondary); margin: var(--spacing-sm) 0; font-size: 0.9em;">
+                                    ${request.property} • ${request.unit}
+                                </p>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--color-border);">
+                            <div>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Provider</p>
+                                <p style="margin: 0; font-weight: bold;">${request.status === 'completed' ? 'Completed' : 'Assigned'}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Cost</p>
+                                <p style="margin: 0; font-weight: bold; color: var(--color-accent);">
+                                    ${formatCurrency(request.estimatedCost || request.actualCost || 0)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            protectDashboard('landlord');
+            loadLandlordDashboard();
+        });
+    </script>
+</body>
+</html>

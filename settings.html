@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="index.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- Populated by JavaScript -->
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;">Settings</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Settings Navigation Tabs -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <div style="display: flex; gap: var(--spacing-md); border-bottom: 2px solid var(--color-border); margin-bottom: var(--spacing-lg); overflow-x: auto;">
+                        <button class="settings-tab active" onclick="switchTab('profile')" style="padding: var(--spacing-md); border: none; background: none; cursor: pointer; border-bottom: 3px solid var(--color-accent); color: var(--color-accent); font-weight: bold;">
+                            👤 Profile
+                        </button>
+                        <button class="settings-tab" onclick="switchTab('notifications')" style="padding: var(--spacing-md); border: none; background: none; cursor: pointer; color: var(--color-text-secondary);">
+                            🔔 Notifications
+                        </button>
+                        <button class="settings-tab" onclick="switchTab('privacy')" style="padding: var(--spacing-md); border: none; background: none; cursor: pointer; color: var(--color-text-secondary);">
+                            🔒 Privacy
+                        </button>
+                        <button class="settings-tab" onclick="switchTab('security')" style="padding: var(--spacing-md); border: none; background: none; cursor: pointer; color: var(--color-text-secondary);">
+                            🛡️ Security
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Tab -->
+                <div id="profile-tab" class="settings-tab-content">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Profile Information</h2>
+                    
+                    <div class="grid grid-2 gap-xl" style="margin-bottom: var(--spacing-xl);">
+                        <!-- Profile Card -->
+                        <div class="card">
+                            <div style="text-align: center; margin-bottom: var(--spacing-lg);">
+                                <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">👤</div>
+                                <h3 id="profile-name" style="margin: 0;">Loading...</h3>
+                                <p id="profile-role" style="color: var(--color-text-secondary); margin: var(--spacing-sm) 0;">Role</p>
+                                <button class="btn btn-secondary btn-small" onclick="alert('Photo upload - API integration needed')">
+                                    Change Photo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Profile Form -->
+                        <div class="card">
+                            <form style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                                <div class="form-group">
+                                    <label for="profile-email">Email Address</label>
+                                    <input type="email" id="profile-email" placeholder="email@example.com" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-phone">Phone Number</label>
+                                    <input type="tel" id="profile-phone" placeholder="+254 712 345 678">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-location">Building/Address</label>
+                                    <input type="text" id="profile-location" placeholder="Unit 305, Lavington Residences">
+                                </div>
+                                <button type="submit" class="btn btn-primary" onclick="handleProfileUpdate(event)">
+                                    Save Changes
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Role Information -->
+                    <div class="card">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Role Information</h3>
+                        <div id="role-info-content">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Tab -->
+                <div id="notifications-tab" class="settings-tab-content" style="display: none;">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Notification Preferences</h2>
+                    
+                    <div class="card">
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+                            <!-- Notification Category: Payments -->
+                            <div>
+                                <h4 style="margin-bottom: var(--spacing-md);">💳 Payment Notifications</h4>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                    <label for="notif-payment-due">Payment Due Reminders</label>
+                                    <input type="checkbox" id="notif-payment-due" checked>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label for="notif-payment-received">Payment Received (Landlord)</label>
+                                    <input type="checkbox" id="notif-payment-received" checked>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-lg);">
+                                <h4 style="margin-bottom: var(--spacing-md);">🔧 Maintenance Notifications</h4>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                    <label for="notif-maintenance-updates">Maintenance Updates</label>
+                                    <input type="checkbox" id="notif-maintenance-updates" checked>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label for="notif-provider-assigned">Provider Assigned</label>
+                                    <input type="checkbox" id="notif-provider-assigned" checked>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-lg);">
+                                <h4 style="margin-bottom: var(--spacing-md);">👥 Community Notifications</h4>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                    <label for="notif-community-posts">Community Posts</label>
+                                    <input type="checkbox" id="notif-community-posts" checked>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                    <label for="notif-events">Event Invitations</label>
+                                    <input type="checkbox" id="notif-events" checked>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label for="notif-alerts">Security Alerts</label>
+                                    <input type="checkbox" id="notif-alerts" checked>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-lg);">
+                                <h4 style="margin-bottom: var(--spacing-md);">🏪 Service Notifications</h4>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label for="notif-services">Service Recommendations</label>
+                                    <input type="checkbox" id="notif-services" checked>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" style="margin-top: var(--spacing-lg);" onclick="handleNotificationSave(event)">
+                                Save Preferences
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy Tab -->
+                <div id="privacy-tab" class="settings-tab-content" style="display: none;">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Privacy Controls</h2>
+                    
+                    <div class="card">
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+                            <!-- Profile Visibility -->
+                            <div>
+                                <h4 style="margin-bottom: var(--spacing-md);">👤 Profile Visibility</h4>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                    <div>
+                                        <label for="privacy-profile">Show Profile to Building Members</label>
+                                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0 0 0;">Others can see your name and role</p>
+                                    </div>
+                                    <input type="checkbox" id="privacy-profile" checked>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-lg);">
+                                <h4 style="margin-bottom: var(--spacing-md);">📍 Location & Contact</h4>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                    <div>
+                                        <label for="privacy-phone">Share Phone Number</label>
+                                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0 0 0;">Only with verified service providers</p>
+                                    </div>
+                                    <input type="checkbox" id="privacy-phone" checked>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <div>
+                                        <label for="privacy-unit">Show Unit Number</label>
+                                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0 0 0;">In community directory</p>
+                                    </div>
+                                    <input type="checkbox" id="privacy-unit" checked>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-lg);">
+                                <h4 style="margin-bottom: var(--spacing-md);">💬 Communication</h4>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                                    <div>
+                                        <label for="privacy-messages">Allow Direct Messages</label>
+                                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0 0 0;">From building members</p>
+                                    </div>
+                                    <input type="checkbox" id="privacy-messages" checked>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" style="margin-top: var(--spacing-lg);" onclick="handlePrivacySave(event)">
+                                Save Privacy Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Tab -->
+                <div id="security-tab" class="settings-tab-content" style="display: none;">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Security & Sessions</h2>
+                    
+                    <div class="grid grid-2 gap-xl">
+                        <!-- Change Password Card -->
+                        <div class="card">
+                            <h3 style="margin-bottom: var(--spacing-lg);">Change Password</h3>
+                            <form style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                                <div class="form-group">
+                                    <label for="current-password">Current Password</label>
+                                    <input type="password" id="current-password" placeholder="Enter current password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password" placeholder="Enter new password">
+                                    <small style="color: var(--color-text-secondary); margin-top: var(--spacing-xs); display: block;">
+                                        At least 8 characters, mix of letters and numbers
+                                    </small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <input type="password" id="confirm-password" placeholder="Confirm new password">
+                                </div>
+                                <button type="submit" class="btn btn-primary" onclick="handlePasswordChange(event)">
+                                    Update Password
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Active Sessions Card -->
+                        <div class="card">
+                            <h3 style="margin-bottom: var(--spacing-lg);">Active Sessions</h3>
+                            <div style="margin-bottom: var(--spacing-md);">
+                                <div style="background: var(--color-bg); padding: var(--spacing-md); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-md);">
+                                    <p style="font-weight: bold; margin: 0;">Chrome on MacOS</p>
+                                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                        This device • Last active: Just now
+                                    </p>
+                                </div>
+                                <div style="background: var(--color-bg); padding: var(--spacing-md); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-md);">
+                                    <p style="font-weight: bold; margin: 0;">Safari on iOS</p>
+                                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                        iPhone 12 • Last active: 2 hours ago
+                                    </p>
+                                </div>
+                            </div>
+                            <button class="btn btn-error btn-small" onclick="handleLogoutAll()">
+                                Logout All Devices
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Two-Factor Authentication -->
+                    <div class="card" style="margin-top: var(--spacing-xl);">
+                        <h3 style="margin-bottom: var(--spacing-lg);">🛡️ Two-Factor Authentication</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                            Add an extra layer of security to your account
+                        </p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-bg); padding: var(--spacing-md); border-radius: var(--border-radius-md);">
+                            <div>
+                                <p style="font-weight: bold; margin: 0;">SMS Authentication</p>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">Not enabled</p>
+                            </div>
+                            <button class="btn btn-primary btn-small" onclick="alert('2FA setup - API integration needed')">
+                                Enable
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div class="card" style="margin-top: var(--spacing-xl); border: 2px solid var(--color-error);">
+                        <h3 style="color: var(--color-error); margin-bottom: var(--spacing-lg);">⚠️ Danger Zone</h3>
+                        <div style="background: var(--color-bg); padding: var(--spacing-md); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-md);">
+                            <p style="font-weight: bold; margin: 0; color: var(--color-error);">Delete Account</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                Permanently delete your HomeHub account and all associated data
+                            </p>
+                        </div>
+                        <button class="btn btn-error" onclick="alert('Account deletion confirmation - API integration needed')">
+                            Delete My Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load settings page
+         */
+        function loadSettingsPage() {
+            const role = AuthManager.getRole();
+            protectDashboard(role);
+            
+            initializeSidebar(role);
+            loadProfileInfo(role);
+        }
+
+        /**
+         * Initialize sidebar
+         */
+        function initializeSidebar(role) {
+            const nav = document.getElementById('sidebar-nav');
+            let html = '';
+
+            if (role === 'tenant') {
+                html = `
+                    <a href="dashboard-tenant.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💳</span> Pay Rent
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link active">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'homeowner') {
+                html = `
+                    <a href="dashboard-homeowner.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="utilities.html" class="nav-link">
+                        <span class="nav-icon">💡</span> Utilities
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link active">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'landlord') {
+                html = `
+                    <a href="dashboard-landlord.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💰</span> Collections
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">📧</span> Communications
+                    </a>
+                    <a href="settings.html" class="nav-link active">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            }
+
+            nav.innerHTML = html;
+        }
+
+        /**
+         * Load profile information
+         */
+        function loadProfileInfo(role) {
+            const user = getMockUser(role);
+
+            document.getElementById('profile-name').textContent = user.name;
+            document.getElementById('profile-role').textContent = capitalize(role);
+            document.getElementById('profile-email').value = user.email;
+            document.getElementById('profile-phone').value = user.phone || '';
+            document.getElementById('profile-location').value = user.building || '';
+
+            // Load role-specific info
+            const roleInfo = document.getElementById('role-info-content');
+            let html = '';
+
+            if (role === 'tenant') {
+                html = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Role</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Tenant</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Building</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Lavington Residences</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Unit</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Unit 305</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Lease Status</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0; color: var(--color-success);">✓ Active</p>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'homeowner') {
+                html = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Role</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Homeowner</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Building</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Westlands View</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Unit</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Unit 402</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Ownership</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0; color: var(--color-success);">✓ Verified</p>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'landlord') {
+                html = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Role</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Landlord</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Company</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Kariuki Properties</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Properties</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0;">12 Managed</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0;">Account Status</p>
+                            <p style="font-weight: bold; margin: var(--spacing-sm) 0; color: var(--color-success);">✓ Verified</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            roleInfo.innerHTML = html;
+        }
+
+        /**
+         * Switch settings tab
+         */
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.settings-tab-content').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            // Update button styling
+            document.querySelectorAll('.settings-tab').forEach(btn => {
+                btn.style.borderBottom = 'none';
+                btn.style.color = 'var(--color-text-secondary)';
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            
+            // Update button styling
+            event.target.style.borderBottom = '3px solid var(--color-accent)';
+            event.target.style.color = 'var(--color-accent)';
+        }
+
+        /**
+         * Handle profile update
+         */
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            alert('✓ Profile updated successfully!');
+        }
+
+        /**
+         * Handle notification save
+         */
+        function handleNotificationSave(e) {
+            e.preventDefault();
+            alert('✓ Notification preferences saved!');
+        }
+
+        /**
+         * Handle privacy save
+         */
+        function handlePrivacySave(e) {
+            e.preventDefault();
+            alert('✓ Privacy settings saved!');
+        }
+
+        /**
+         * Handle password change
+         */
+        function handlePasswordChange(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (!currentPassword || !newPassword) {
+                alert('Please fill in all password fields');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                alert('Password must be at least 8 characters');
+                return;
+            }
+
+            alert('✓ Password changed successfully!');
+            
+            // Reset form
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+        }
+
+        /**
+         * Logout all devices
+         */
+        function handleLogoutAll() {
+            if (confirm('Are you sure? You will be logged out of all devices.')) {
+                alert('✓ Logged out from all devices');
+                handleLogout();
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettingsPage();
+        });
+    </script>
+</body>
+</html>

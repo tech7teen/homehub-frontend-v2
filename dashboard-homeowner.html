@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Homeowner | HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="dashboard-homeowner.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-homeowner.html" class="nav-link active">
+                    <span class="nav-icon">🏠</span> Dashboard
+                </a>
+                <a href="utilities.html" class="nav-link">
+                    <span class="nav-icon">💡</span> Utilities
+                </a>
+                <a href="neighbourhood.html" class="nav-link">
+                    <span class="nav-icon">🏘️</span> Community
+                </a>
+                <a href="services.html" class="nav-link">
+                    <span class="nav-icon">🏪</span> Services
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <span class="nav-icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;">Dashboard</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Welcome Section -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <h2 id="welcome-name">Welcome home!</h2>
+                    <p style="color: var(--color-text-secondary);" id="property-info">Unit 402, Westlands View Apartments</p>
+                </div>
+
+                <!-- This Month's Expenses -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">This Month's Expenses</h3>
+                    <div class="grid grid-2 gap-lg">
+                        <div class="card" style="background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-surface) 100%);">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Total Expenses</p>
+                            <h2 id="total-expenses" style="margin: var(--spacing-md) 0; color: var(--color-accent);">KES 13,700</h2>
+                            <div id="expenses-breakdown" style="font-size: 0.85em;">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Monthly Trend -->
+                        <div class="card">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">3-Month Trend</p>
+                            <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 100px;">
+                                <div style="text-align: center;">
+                                    <div style="height: 40px; width: 30px; background: var(--color-accent-light); border-radius: 4px; margin-bottom: 4px;"></div>
+                                    <p style="font-size: 0.8em; margin: 0;">Apr</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="height: 60px; width: 30px; background: var(--color-warning); border-radius: 4px; margin-bottom: 4px;"></div>
+                                    <p style="font-size: 0.8em; margin: 0;">May</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="height: 50px; width: 30px; background: var(--color-accent); border-radius: 4px; margin-bottom: 4px;"></div>
+                                    <p style="font-size: 0.8em; margin: 0;">Jun</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Utilities Overview -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Utilities Overview</h3>
+                    <div id="utilities-section" class="grid grid-3 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <div style="margin-top: var(--spacing-lg);">
+                        <a href="utilities.html" class="btn btn-secondary">View Detailed Analysis</a>
+                    </div>
+                </section>
+
+                <!-- Security Alerts -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Security & Alerts</h3>
+                    <div id="security-section">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Community Events -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Upcoming Events</h3>
+                    <div id="events-section" class="grid grid-2 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Recommended Services (Monetization) -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Services Near You</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">⭐ Featured services recommended by residents</p>
+                    <div id="services-section" class="grid grid-3 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load homeowner dashboard with mock data
+         */
+        function loadHomeownerDashboard() {
+            const dashboard = mockHomeownerDashboard;
+            const user = mockUsers.homeowner;
+
+            // Update welcome
+            document.getElementById('welcome-name').textContent = `Welcome home, ${user.name.split(' ')[0]}!`;
+            document.getElementById('property-info').textContent = dashboard.property.address;
+
+            // Update expenses
+            document.getElementById('total-expenses').textContent = formatCurrency(dashboard.expenses.thisMonth.total);
+            
+            // Expenses breakdown
+            const breakdown = `
+                <p style="margin: var(--spacing-xs) 0;">💡 Electricity: ${formatCurrency(dashboard.expenses.thisMonth.electricity)}</p>
+                <p style="margin: var(--spacing-xs) 0;">💧 Water: ${formatCurrency(dashboard.expenses.thisMonth.water)}</p>
+                <p style="margin: var(--spacing-xs) 0;">📡 Internet: ${formatCurrency(dashboard.expenses.thisMonth.internet)}</p>
+                <p style="margin: var(--spacing-xs) 0;">🏢 Service: ${formatCurrency(dashboard.expenses.thisMonth.serviceCharge)}</p>
+                <p style="margin: var(--spacing-xs) 0;">🔒 Security: ${formatCurrency(dashboard.expenses.thisMonth.securityLevy)}</p>
+            `;
+            document.getElementById('expenses-breakdown').innerHTML = breakdown;
+
+            // Load utilities
+            loadUtilitiesSection(dashboard.utilities);
+
+            // Load security alerts
+            loadSecuritySection(dashboard.security.alerts);
+
+            // Load events
+            loadEventsSection(dashboard.community.events);
+
+            // Load services
+            loadServicesSection(dashboard.suggestedServices);
+        }
+
+        /**
+         * Load utilities overview
+         */
+        function loadUtilitiesSection(utilities) {
+            const section = document.getElementById('utilities-section');
+            
+            let html = `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                        <h4 style="margin: 0;">⚡ Electricity</h4>
+                        <span class="badge badge-success">↓ Decreasing</span>
+                    </div>
+                    <p style="font-size: 1.3em; font-weight: bold; margin: var(--spacing-sm) 0;">${utilities.electricity.thisMonth} kWh</p>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                        Building avg: ${utilities.electricity.buildingAverage} kWh<br>
+                        Score: ${utilities.electricity.conservationScore}% 🌱
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                        <h4 style="margin: 0;">💧 Water</h4>
+                        <span class="badge badge-success">↓ Decreasing</span>
+                    </div>
+                    <p style="font-size: 1.3em; font-weight: bold; margin: var(--spacing-sm) 0;">${utilities.water.thisMonth} m³</p>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                        Building avg: ${utilities.water.buildingAverage} m³<br>
+                        Score: ${utilities.water.conservationScore}% 🌱
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                        <h4 style="margin: 0;">📡 Internet</h4>
+                        <span class="badge badge-success">✓ Active</span>
+                    </div>
+                    <p style="font-size: 1.3em; font-weight: bold; margin: var(--spacing-sm) 0;">100 Mbps</p>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                        Status: Active<br>
+                        Plan: Premium
+                    </p>
+                </div>
+            `;
+            
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load security alerts
+         */
+        function loadSecuritySection(alerts) {
+            const section = document.getElementById('security-section');
+            
+            let html = '';
+            alerts.forEach(alert => {
+                const badgeClass = alert.severity === 'success' ? 'badge-success' : 'badge-info';
+                html += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <h4 style="margin: 0;">${alert.title}</h4>
+                                <p style="color: var(--color-text-secondary); margin: var(--spacing-sm) 0; font-size: 0.9em;">
+                                    ${alert.content}
+                                </p>
+                                <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">
+                                    ${formatDate(alert.timestamp)}
+                                </p>
+                            </div>
+                            <span class="badge ${badgeClass}">✓</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load upcoming events
+         */
+        function loadEventsSection(events) {
+            const section = document.getElementById('events-section');
+            
+            let html = '';
+            events.forEach(event => {
+                html += `
+                    <div class="card">
+                        <h4>${event.title}</h4>
+                        <p style="color: var(--color-text-secondary); margin: var(--spacing-sm) 0;">
+                            📅 ${formatDate(event.date)}<br>
+                            🕐 ${event.time}<br>
+                            📍 ${event.location}
+                        </p>
+                        <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md);">
+                            <p style="color: var(--color-accent); font-weight: bold; margin: 0;">
+                                👥 ${event.rsvpCount} people attending
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load services section
+         */
+        function loadServicesSection(services) {
+            const section = document.getElementById('services-section');
+            
+            let html = '';
+            services.slice(0, 3).forEach(service => {
+                html += `
+                    <div class="card">
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-sm);">
+                                <h4 style="margin: 0;">${service.name}</h4>
+                                ${service.featured ? '<span class="badge badge-primary">⭐</span>' : ''}
+                            </div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">${service.category}</p>
+                        </div>
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <span class="text-accent text-bold">⭐ ${service.rating}</span>
+                            <span style="color: var(--color-text-secondary); font-size: 0.85em;"> (${service.reviews})</span>
+                        </div>
+                        <p style="font-size: 0.85em; color: var(--color-accent); margin-bottom: var(--spacing-md); font-weight: bold;">
+                            ${service.cost}
+                        </p>
+                    </div>
+                `;
+            });
+            
+            section.innerHTML = html;
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            protectDashboard('homeowner');
+            loadHomeownerDashboard();
+        });
+    </script>
+</body>
+</html>

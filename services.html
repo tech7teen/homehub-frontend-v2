@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="index.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- Populated by JavaScript -->
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;">Services</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Page Header -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <h2>Local Services Marketplace</h2>
+                    <p style="color: var(--color-text-secondary);">Find and book trusted service providers in your area</p>
+                </div>
+
+                <!-- Search & Filter -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <div class="grid grid-2 gap-lg">
+                        <div class="form-group">
+                            <input type="text" id="search-box" placeholder="Search services..." style="width: 100%;">
+                        </div>
+                        <div class="form-group">
+                            <select id="category-filter" onchange="filterByCategory(this.value)">
+                                <option value="">All Categories</option>
+                                <option value="plumbing">🚰 Plumbing</option>
+                                <option value="electrical">⚡ Electrical</option>
+                                <option value="cleaning">🧹 Cleaning</option>
+                                <option value="internet">📡 Internet</option>
+                                <option value="security">🔒 Security</option>
+                                <option value="moving">🚚 Moving</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Services (Sponsored Placement - Monetization) -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-md);">⭐ Featured Providers</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg); font-size: 0.9em;">
+                        Top-rated, verified providers - sponsored placement
+                    </p>
+                    <div id="featured-services" class="grid grid-3 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Plumbing Services -->
+                <section style="margin-bottom: var(--spacing-xl);" class="category-section" data-category="plumbing">
+                    <h3 style="margin-bottom: var(--spacing-lg);">🚰 Plumbing Services</h3>
+                    <div class="grid grid-3 gap-lg" id="plumbing-services">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Electrical Services -->
+                <section style="margin-bottom: var(--spacing-xl);" class="category-section" data-category="electrical">
+                    <h3 style="margin-bottom: var(--spacing-lg);">⚡ Electrical Services</h3>
+                    <div class="grid grid-3 gap-lg" id="electrical-services">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Cleaning Services -->
+                <section style="margin-bottom: var(--spacing-xl);" class="category-section" data-category="cleaning">
+                    <h3 style="margin-bottom: var(--spacing-lg);">🧹 Cleaning Services</h3>
+                    <div class="grid grid-3 gap-lg" id="cleaning-services">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Internet Services -->
+                <section style="margin-bottom: var(--spacing-xl);" class="category-section" data-category="internet">
+                    <h3 style="margin-bottom: var(--spacing-lg);">📡 Internet Services</h3>
+                    <div class="grid grid-3 gap-lg" id="internet-services">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Security Services -->
+                <section style="margin-bottom: var(--spacing-xl);" class="category-section" data-category="security">
+                    <h3 style="margin-bottom: var(--spacing-lg);">🔒 Security Services</h3>
+                    <div class="grid grid-3 gap-lg" id="security-services">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Moving Services -->
+                <section style="margin-bottom: var(--spacing-xl);" class="category-section" data-category="moving">
+                    <h3 style="margin-bottom: var(--spacing-lg);">🚚 Moving Services</h3>
+                    <div class="grid grid-3 gap-lg" id="moving-services">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load services page
+         */
+        function loadServicesPage() {
+            const role = AuthManager.getRole();
+            protectDashboard(role);
+            
+            initializeSidebar(role);
+            loadFeaturedServices();
+            loadAllServices();
+        }
+
+        /**
+         * Initialize sidebar
+         */
+        function initializeSidebar(role) {
+            const nav = document.getElementById('sidebar-nav');
+            let html = '';
+
+            if (role === 'tenant') {
+                html = `
+                    <a href="dashboard-tenant.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💳</span> Pay Rent
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link active">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'homeowner') {
+                html = `
+                    <a href="dashboard-homeowner.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="utilities.html" class="nav-link">
+                        <span class="nav-icon">💡</span> Utilities
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link active">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'landlord') {
+                html = `
+                    <a href="dashboard-landlord.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💰</span> Collections
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link">
+                        <span class="nav-icon">📧</span> Communications
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            }
+
+            nav.innerHTML = html;
+        }
+
+        /**
+         * Load featured services (sponsored placement - MONETIZATION)
+         */
+        function loadFeaturedServices() {
+            const section = document.getElementById('featured-services');
+            const featured = mockServicesData.featured.slice(0, 3);
+
+            let html = '';
+            featured.forEach(service => {
+                html += `
+                    <div class="card" style="background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-surface) 100%); position: relative;">
+                        <div style="position: absolute; top: 12px; right: 12px;">
+                            <span class="badge badge-primary">⭐ Featured</span>
+                        </div>
+                        <div style="margin-bottom: var(--spacing-lg);">
+                            <h3 style="margin: 0; color: var(--color-accent);">${service.name}</h3>
+                            <p style="color: var(--color-text-secondary); margin: var(--spacing-sm) 0; font-size: 0.9em;">
+                                ${service.category}
+                            </p>
+                        </div>
+                        <p style="color: var(--color-text-secondary); margin: var(--spacing-md) 0; font-size: 0.9em;">
+                            ${service.description}
+                        </p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: var(--spacing-md) 0;">
+                            <div>
+                                <span class="text-accent text-bold">⭐ ${service.rating}</span>
+                                <span style="color: var(--color-text-secondary); font-size: 0.85em;"> (${service.reviews})</span>
+                            </div>
+                            <span style="background: var(--color-accent-light); color: var(--color-accent); padding: var(--spacing-xs) var(--spacing-sm); border-radius: 999px; font-size: 0.85em; font-weight: bold;">
+                                Verified ✓
+                            </span>
+                        </div>
+                        <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md); margin-top: var(--spacing-md);">
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                                📱 Response: ${service.responseTime}
+                            </p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                💰 ${service.costRange}
+                            </p>
+                        </div>
+                        <button class="btn btn-primary btn-full" style="margin-top: var(--spacing-md);">
+                            Book Now
+                        </button>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load all services by category
+         */
+        function loadAllServices() {
+            const allServices = {
+                plumbing: [
+                    { name: 'Elite Plumbing Services', rating: 4.8, reviews: 156, cost: 'KES 2,000-10,000', time: '30 mins', featured: true, description: 'Professional plumbing for residential & commercial' },
+                    { name: 'Quick Pipes', rating: 4.5, reviews: 89, cost: 'KES 1,500-8,000', time: '1 hour', featured: false, description: 'Fast & reliable plumbing solutions' },
+                    { name: 'Master Plumber', rating: 4.7, reviews: 143, cost: 'KES 3,000-12,000', time: '45 mins', featured: false, description: 'Licensed plumber with 15 years experience' }
+                ],
+                electrical: [
+                    { name: 'Quick Electrical', rating: 4.6, reviews: 89, cost: 'KES 1,000-8,000', time: '45 mins', featured: true, description: 'Fast electrical services & repairs' },
+                    { name: 'SafeWire Electricians', rating: 4.8, reviews: 167, cost: 'KES 1,500-10,000', time: '1 hour', featured: false, description: 'Certified electricians, safety guaranteed' },
+                    { name: 'Spark Electrical', rating: 4.4, reviews: 72, cost: 'KES 1,200-7,000', time: '1.5 hours', featured: false, description: 'Electrical installations & troubleshooting' }
+                ],
+                cleaning: [
+                    { name: 'Home Cleaning Pro', rating: 4.9, reviews: 203, cost: 'KES 1,500-5,000', time: 'Same day', featured: true, description: 'Comprehensive home cleaning services' },
+                    { name: 'Sparkle Clean', rating: 4.7, reviews: 134, cost: 'KES 2,000-6,000', time: '2 hours', featured: false, description: 'Professional deep cleaning specialists' },
+                    { name: 'Fresh & Clean', rating: 4.6, reviews: 98, cost: 'KES 1,800-4,500', time: '2-3 hours', featured: false, description: 'Eco-friendly cleaning products' }
+                ],
+                internet: [
+                    { name: 'Fiber ISP Nairobi', rating: 4.8, reviews: 245, cost: 'KES 1,500-3,500', time: 'Installation', featured: true, description: 'Ultra-fast fiber internet service' },
+                    { name: 'ConnectNet', rating: 4.5, reviews: 167, cost: 'KES 1,200-3,000', time: '24-48hrs', featured: false, description: 'Reliable high-speed internet' },
+                    { name: 'Swift Internet', rating: 4.6, reviews: 112, cost: 'KES 1,000-2,800', time: '24-48hrs', featured: false, description: 'Affordable broadband solutions' }
+                ],
+                security: [
+                    { name: 'Guardian Security', rating: 4.7, reviews: 134, cost: 'KES 3,000-10,000/month', time: 'Setup', featured: true, description: '24/7 security monitoring & alarms' },
+                    { name: 'SafeHome Systems', rating: 4.8, reviews: 189, cost: 'KES 2,500-8,000/month', time: 'Installation', featured: false, description: 'Advanced CCTV & alarm systems' },
+                    { name: 'SecureGuard', rating: 4.5, reviews: 76, cost: 'KES 2,000-7,000/month', time: 'Setup', featured: false, description: 'Professional security installation' }
+                ],
+                moving: [
+                    { name: 'SafeMove Logistics', rating: 4.9, reviews: 178, cost: 'KES 5,000-25,000', time: 'Same day', featured: true, description: 'Professional moving & logistics services' },
+                    { name: 'QuickMove', rating: 4.6, reviews: 95, cost: 'KES 4,000-20,000', time: '2-4 hours', featured: false, description: 'Fast, affordable moving solutions' },
+                    { name: 'ProMovers Kenya', rating: 4.7, reviews: 121, cost: 'KES 6,000-30,000', time: 'Next day', featured: false, description: 'Expert movers with insurance' }
+                ]
+            };
+
+            // Load each category
+            Object.keys(allServices).forEach(category => {
+                const section = document.getElementById(category + '-services');
+                let html = '';
+
+                allServices[category].forEach(service => {
+                    const featured = service.featured ? '<span class="badge badge-primary" style="position: absolute; top: 12px; right: 12px;">⭐</span>' : '';
+
+                    html += `
+                        <div class="card" style="position: relative;">
+                            ${featured}
+                            <div style="margin-bottom: var(--spacing-md);">
+                                <h4 style="margin: 0;">${service.name}</h4>
+                                <p style="color: var(--color-text-secondary); margin: var(--spacing-xs) 0; font-size: 0.9em;">
+                                    ${service.description}
+                                </p>
+                            </div>
+                            <div style="margin-bottom: var(--spacing-md);">
+                                <div>
+                                    <span class="text-accent text-bold">⭐ ${service.rating}</span>
+                                    <span style="color: var(--color-text-secondary); font-size: 0.85em;"> (${service.reviews} reviews)</span>
+                                </div>
+                            </div>
+                            <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md);">
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                    💰 ${service.cost}
+                                </p>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                                    📱 ${service.time}
+                                </p>
+                            </div>
+                            <button class="btn btn-secondary btn-small btn-full" style="margin-top: var(--spacing-md);">
+                                View Details
+                            </button>
+                        </div>
+                    `;
+                });
+
+                section.innerHTML = html;
+            });
+        }
+
+        /**
+         * Filter by category
+         */
+        function filterByCategory(category) {
+            const sections = document.querySelectorAll('.category-section');
+            
+            sections.forEach(section => {
+                if (category === '' || section.dataset.category === category) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            if (category === '') {
+                document.getElementById('featured-services').parentElement.style.display = 'block';
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadServicesPage();
+        });
+    </script>
+</body>
+</html>

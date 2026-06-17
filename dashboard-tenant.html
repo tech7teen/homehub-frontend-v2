@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Tenant | HomeHub</title>
+  <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="dashboard-tenant.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-tenant.html" class="nav-link active">
+                    <span class="nav-icon">🏠</span> Dashboard
+                </a>
+                <a href="payments.html" class="nav-link">
+                    <span class="nav-icon">💳</span> Pay Rent
+                </a>
+                <a href="maintenance.html" class="nav-link">
+                    <span class="nav-icon">🔧</span> Maintenance
+                </a>
+                <a href="neighbourhood.html" class="nav-link">
+                    <span class="nav-icon">🏘️</span> Community
+                </a>
+                <a href="services.html" class="nav-link">
+                    <span class="nav-icon">🏪</span> Services
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <span class="nav-icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;">Dashboard</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Welcome Section -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <h2 id="welcome-name">Welcome back!</h2>
+                    <p style="color: var(--color-text-secondary);">Here's your housing overview</p>
+                </div>
+
+                <!-- Quick Actions -->
+                <section class="grid grid-3 gap-lg" style="margin-bottom: var(--spacing-xl);">
+                    <a href="payments.html" class="card" style="text-align: center; cursor: pointer; transition: all var(--transition-normal);">
+                        <div style="font-size: 2.5rem; margin-bottom: var(--spacing-md);">💳</div>
+                        <h4>Pay Rent</h4>
+                        <p style="color: var(--color-text-secondary);">Quick payment</p>
+                    </a>
+                    <a href="maintenance.html" class="card" style="text-align: center; cursor: pointer; transition: all var(--transition-normal);">
+                        <div style="font-size: 2.5rem; margin-bottom: var(--spacing-md);">🔧</div>
+                        <h4>Request Maintenance</h4>
+                        <p style="color: var(--color-text-secondary);">Report an issue</p>
+                    </a>
+                    <a href="neighbourhood.html" class="card" style="text-align: center; cursor: pointer; transition: all var(--transition-normal);">
+                        <div style="font-size: 2.5rem; margin-bottom: var(--spacing-md);">👥</div>
+                        <h4>Connect</h4>
+                        <p style="color: var(--color-text-secondary);">8 neighbors connected</p>
+                    </a>
+                </section>
+
+                <!-- Financial Status -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Financial Status</h3>
+                    <div class="grid grid-2 gap-lg">
+                        <!-- Rent Due Card -->
+                        <div class="card">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Amount Due</p>
+                            <h2 id="amount-due" style="margin: var(--spacing-md) 0; color: var(--color-accent);">KES 15,000</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">Due: <span id="due-date">5 Jul</span></p>
+                            <a href="payments.html" class="btn btn-primary btn-full" style="margin-top: var(--spacing-md);">Pay Now</a>
+                        </div>
+
+                        <!-- Year Summary Card -->
+                        <div class="card">
+                            <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Paid This Year</p>
+                            <h2 id="paid-ytd" style="margin: var(--spacing-md) 0; color: var(--color-success);">KES 90,000</h2>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em;">Status: <span class="badge badge-success">✓ On Time</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Maintenance Section -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Maintenance Requests</h3>
+                    <div id="maintenance-section">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Building Updates -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Building Updates</h3>
+                    <div id="updates-section">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Recommended Services (Monetization) -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Recommended Services</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">Trusted providers verified by residents</p>
+                    <div id="services-section" class="grid grid-2 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <div style="text-align: center; margin-top: var(--spacing-lg);">
+                        <a href="services.html" class="btn btn-secondary">Browse All Services</a>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load tenant dashboard with mock data
+         */
+        function loadTenantDashboard() {
+            // Get mock data
+            const dashboard = getMockTenantDashboard;
+            const user = getMockUser('tenant');
+
+            // Update welcome message
+            document.getElementById('welcome-name').textContent = `Welcome back, ${user.name.split(' ')[0]}!`;
+
+            // Update financial information
+            document.getElementById('amount-due').textContent = formatCurrency(dashboard.financial.rentDue);
+            document.getElementById('due-date').textContent = formatDate(dashboard.financial.dueDate);
+            document.getElementById('paid-ytd').textContent = formatCurrency(dashboard.financial.paidThisYear);
+
+            // Load maintenance requests
+            loadMaintenanceSection(dashboard.maintenance);
+
+            // Load building updates
+            loadUpdatesSection(dashboard.community.buildingUpdates);
+
+            // Load suggested services
+            loadServicesSection(dashboard.suggestedServices);
+        }
+
+        /**
+         * Load maintenance requests section
+         */
+        function loadMaintenanceSection(maintenanceData) {
+            const section = document.getElementById('maintenance-section');
+            
+            if (!maintenanceData.recentRequests || maintenanceData.recentRequests.length === 0) {
+                section.innerHTML = '<p style="color: var(--color-text-secondary);">No pending maintenance requests</p>';
+                return;
+            }
+
+            let html = `
+                <div style="margin-bottom: var(--spacing-md);">
+                    <p style="color: var(--color-text-secondary);">
+                        <strong>${maintenanceData.pendingRequests}</strong> pending • 
+                        <strong>${maintenanceData.completedThisMonth}</strong> completed this month
+                    </p>
+                </div>
+            `;
+
+            maintenanceData.recentRequests.forEach(request => {
+                html += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <h4>${request.issue}</h4>
+                                <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                                    ${request.assignedTo} • ${formatDate(request.reportedDate)}
+                                </p>
+                            </div>
+                            <span class="badge badge-info">→ In Progress</span>
+                        </div>
+                        <div style="margin-top: var(--spacing-md);">
+                            <p style="font-size: 0.9em; color: var(--color-text-secondary);">Priority: ${getPriorityBadge(request.priority)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load building updates section
+         */
+        function loadUpdatesSection(updates) {
+            const section = document.getElementById('updates-section');
+            
+            if (!updates || updates.length === 0) {
+                section.innerHTML = '<p style="color: var(--color-text-secondary);">No recent updates</p>';
+                return;
+            }
+
+            let html = '';
+            updates.forEach(update => {
+                const postType = getPostTypeInfo(update.type);
+                html += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; gap: var(--spacing-md);">
+                            <span style="font-size: 1.5em;">${postType.icon}</span>
+                            <div>
+                                <h4 style="margin: 0;">${update.title}</h4>
+                                <p style="color: var(--color-text-secondary); margin: var(--spacing-sm) 0; font-size: 0.9em;">
+                                    ${update.content}
+                                </p>
+                                <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">
+                                    ${getTimeAgo(update.timestamp)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load suggested services section
+         */
+        function loadServicesSection(services) {
+            const section = document.getElementById('services-section');
+            
+            if (!services || services.length === 0) {
+                section.innerHTML = '<p style="color: var(--color-text-secondary);">No services available</p>';
+                return;
+            }
+
+            let html = '';
+            services.forEach(service => {
+                html += `
+                    <div class="card" style="cursor: pointer; transition: all var(--transition-normal);">
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-sm);">
+                                <h4 style="margin: 0;">${service.name}</h4>
+                                ${service.featured ? '<span class="badge badge-primary">⭐ Featured</span>' : ''}
+                            </div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">${service.category}</p>
+                        </div>
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <span class="text-accent text-bold">⭐ ${service.rating}</span>
+                            <span style="color: var(--color-text-secondary); font-size: 0.9em;"> (${service.reviews} reviews)</span>
+                        </div>
+                        <div style="padding-top: var(--spacing-md); border-top: 1px solid var(--color-border);">
+                            <p style="font-size: 0.9em; color: var(--color-text-secondary); margin: var(--spacing-sm) 0;">
+                                📱 Response: ${service.responseTime}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            protectDashboard('tenant');
+            loadTenantDashboard();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilities - HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="index.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-homeowner.html" class="nav-link">
+                    <span class="nav-icon">🏠</span> Dashboard
+                </a>
+                <a href="utilities.html" class="nav-link active">
+                    <span class="nav-icon">💡</span> Utilities
+                </a>
+                <a href="neighbourhood.html" class="nav-link">
+                    <span class="nav-icon">🏘️</span> Community
+                </a>
+                <a href="services.html" class="nav-link">
+                    <span class="nav-icon">🏪</span> Services
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <span class="nav-icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;">Utilities</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Page Header -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <h2>Track Your Utilities</h2>
+                    <p style="color: var(--color-text-secondary);">Monitor consumption and costs for 5 utility types</p>
+                </div>
+
+                <!-- This Month Summary -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">This Month's Summary</h3>
+                    <div id="utilities-summary" class="grid grid-5 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Individual Utility Details -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Detailed Breakdown</h3>
+                    <div id="utilities-details">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Historical Trends -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">3-Month Trend</h3>
+                    <div class="card">
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">Month</th>
+                                        <th style="text-align: right;">Electricity</th>
+                                        <th style="text-align: right;">Water</th>
+                                        <th style="text-align: right;">Internet</th>
+                                        <th style="text-align: right;">Service Charge</th>
+                                        <th style="text-align: right;">Security</th>
+                                        <th style="text-align: right;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trends-table">
+                                    <!-- Populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Conservation Tips -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">💡 Conservation Tips</h3>
+                    <div class="grid grid-3 gap-lg">
+                        <div class="card">
+                            <h4>⚡ Reduce Electricity</h4>
+                            <ul style="font-size: 0.9em; margin: 0;">
+                                <li>Use LED bulbs</li>
+                                <li>Unplug devices when not in use</li>
+                                <li>Use natural light during the day</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>💧 Save Water</h4>
+                            <ul style="font-size: 0.9em; margin: 0;">
+                                <li>Fix leaking taps immediately</li>
+                                <li>Take shorter showers</li>
+                                <li>Turn off tap while brushing teeth</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>🌱 Go Green</h4>
+                            <ul style="font-size: 0.9em; margin: 0;">
+                                <li>Reuse water where possible</li>
+                                <li>Reduce energy consumption</li>
+                                <li>Share conservation efforts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Comparison with Building Average -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">How You Compare</h3>
+                    <div class="grid grid-2 gap-lg">
+                        <div class="card">
+                            <h4>⚡ Electricity Usage</h4>
+                            <p style="color: var(--color-text-secondary); margin: var(--spacing-md) 0;">Your Usage vs Building Average</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: var(--spacing-md) 0;">
+                                <div>
+                                    <p style="margin: 0; font-weight: bold;">245 kWh</p>
+                                    <p style="color: var(--color-success); font-size: 0.9em; margin: 0;">↓ 12% below average</p>
+                                </div>
+                                <span style="font-size: 2em;">🌱</span>
+                            </div>
+                            <div style="background: var(--color-bg); border-radius: var(--border-radius-md); height: 8px; overflow: hidden;">
+                                <div style="background: var(--color-success); height: 100%; width: 65%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h4>💧 Water Usage</h4>
+                            <p style="color: var(--color-text-secondary); margin: var(--spacing-md) 0;">Your Usage vs Building Average</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: var(--spacing-md) 0;">
+                                <div>
+                                    <p style="margin: 0; font-weight: bold;">42 m³</p>
+                                    <p style="color: var(--color-success); font-size: 0.9em; margin: 0;">↓ 24% below average</p>
+                                </div>
+                                <span style="font-size: 2em;">🌱</span>
+                            </div>
+                            <div style="background: var(--color-bg); border-radius: var(--border-radius-md); height: 8px; overflow: hidden;">
+                                <div style="background: var(--color-success); height: 100%; width: 76%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Billing Information -->
+                <section>
+                    <h3 style="margin-bottom: var(--spacing-lg);">Billing Information</h3>
+                    <div class="card">
+                        <div class="grid grid-3 gap-lg">
+                            <div>
+                                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Billing Cycle</p>
+                                <p style="font-weight: bold; margin: var(--spacing-sm) 0;">Monthly (1st - Last day)</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Last Updated</p>
+                                <p style="font-weight: bold; margin: var(--spacing-sm) 0;">14 Jun 2026</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Payment Status</p>
+                                <p style="margin: var(--spacing-sm) 0;">✓ Paid</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        /**
+         * Load utilities page
+         */
+        function loadUtilitiesPage() {
+            protectDashboard('homeowner');
+            const data = mockUtilitiesData;
+
+            // Load summary cards
+            loadUtilitiesSummary(data.currentMonth);
+
+            // Load detailed breakdown
+            loadUtilitiesDetails(data.currentMonth);
+
+            // Load historical trends
+            loadTrendTable(data.historicalData);
+        }
+
+        /**
+         * Load utilities summary cards
+         */
+        function loadUtilitiesSummary(utilities) {
+            const section = document.getElementById('utilities-summary');
+            
+            let html = `
+                <div class="card" style="text-align: center;">
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Electricity</p>
+                    <h3 style="margin: var(--spacing-md) 0; color: var(--color-accent);">245 kWh</h3>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">KES 3,500</p>
+                </div>
+
+                <div class="card" style="text-align: center;">
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Water</p>
+                    <h3 style="margin: var(--spacing-md) 0; color: var(--color-accent);">42 m³</h3>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">KES 1,200</p>
+                </div>
+
+                <div class="card" style="text-align: center;">
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Internet</p>
+                    <h3 style="margin: var(--spacing-md) 0; color: var(--color-accent);">100 Mbps</h3>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">KES 2,000</p>
+                </div>
+
+                <div class="card" style="text-align: center;">
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Service Charge</p>
+                    <h3 style="margin: var(--spacing-md) 0; color: var(--color-accent);">Monthly</h3>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">KES 5,000</p>
+                </div>
+
+                <div class="card" style="text-align: center;">
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-sm);">Security Levy</p>
+                    <h3 style="margin: var(--spacing-md) 0; color: var(--color-accent);">Monthly</h3>
+                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">KES 2,000</p>
+                </div>
+            `;
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load detailed utility breakdown
+         */
+        function loadUtilitiesDetails(utilities) {
+            const section = document.getElementById('utilities-details');
+            
+            let html = `
+                <!-- Electricity -->
+                <div class="card" style="margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                        <div>
+                            <h4 style="margin: 0;">⚡ Electricity</h4>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Meter: 2645 kWh</p>
+                        </div>
+                        <span class="badge badge-success">✓ Normal</span>
+                    </div>
+                    <div class="grid grid-3 gap-lg">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Usage</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">245 kWh</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">vs last month: 268 kWh ↓</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Cost</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">KES 3,500</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Rate: KES 14.29/kWh</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Conservation Score</p>
+                            <p style="font-size: 1.2em; font-weight: bold; color: var(--color-success); margin: var(--spacing-sm) 0;">88%</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Good performance 🌱</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Water -->
+                <div class="card" style="margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                        <div>
+                            <h4 style="margin: 0;">💧 Water</h4>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Meter: 192 m³</p>
+                        </div>
+                        <span class="badge badge-success">✓ Normal</span>
+                    </div>
+                    <div class="grid grid-3 gap-lg">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Usage</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">42 m³</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">vs last month: 48 m³ ↓</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Cost</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">KES 1,200</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Rate: KES 28.57/m³</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Conservation Score</p>
+                            <p style="font-size: 1.2em; font-weight: bold; color: var(--color-success); margin: var(--spacing-sm) 0;">92%</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Excellent! 🌱</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internet -->
+                <div class="card" style="margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                        <div>
+                            <h4 style="margin: 0;">📡 Internet</h4>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Provider: Fiber ISP</p>
+                        </div>
+                        <span class="badge badge-success">✓ Active</span>
+                    </div>
+                    <div class="grid grid-3 gap-lg">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Speed</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">100 Mbps</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Unlimited data</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Cost</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">KES 2,000</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Monthly subscription</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Status</p>
+                            <p style="font-size: 1.2em; font-weight: bold; color: var(--color-success); margin: var(--spacing-sm) 0;">Online</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">No downtime</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Charge -->
+                <div class="card" style="margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                        <div>
+                            <h4 style="margin: 0;">🏢 Service Charge</h4>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">Building maintenance & management</p>
+                        </div>
+                        <span class="badge badge-success">✓ Paid</span>
+                    </div>
+                    <div class="grid grid-3 gap-lg">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Amount</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">KES 5,000</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Monthly</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Includes</p>
+                            <p style="font-size: 0.9em; margin: var(--spacing-sm) 0;">• Cleaning<br>• Repairs<br>• Security</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Status</p>
+                            <p style="font-size: 1.2em; font-weight: bold; color: var(--color-success); margin: var(--spacing-sm) 0;">Paid</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">This month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Levy -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                        <div>
+                            <h4 style="margin: 0;">🔒 Security Levy</h4>
+                            <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">24/7 security & surveillance</p>
+                        </div>
+                        <span class="badge badge-success">✓ Paid</span>
+                    </div>
+                    <div class="grid grid-3 gap-lg">
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Amount</p>
+                            <p style="font-size: 1.2em; font-weight: bold; margin: var(--spacing-sm) 0;">KES 2,000</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">Monthly</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Includes</p>
+                            <p style="font-size: 0.9em; margin: var(--spacing-sm) 0;">• Guards<br>• CCTV<br>• Access control</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9em;">Status</p>
+                            <p style="font-size: 1.2em; font-weight: bold; color: var(--color-success); margin: var(--spacing-sm) 0;">Paid</p>
+                            <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">This month</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load trend table
+         */
+        function loadTrendTable(trends) {
+            const tbody = document.getElementById('trends-table');
+            
+            let html = '';
+            trends.forEach(row => {
+                const total = row.electricity + row.water + row.internet + row.serviceCharge + row.securityLevy;
+                html += `
+                    <tr>
+                        <td><strong>${row.month}</strong></td>
+                        <td style="text-align: right;">KES ${formatNumber(row.electricity)}</td>
+                        <td style="text-align: right;">KES ${formatNumber(row.water)}</td>
+                        <td style="text-align: right;">KES ${formatNumber(row.internet)}</td>
+                        <td style="text-align: right;">KES ${formatNumber(row.serviceCharge)}</td>
+                        <td style="text-align: right;">KES ${formatNumber(row.securityLevy)}</td>
+                        <td style="text-align: right;"><strong>KES ${formatNumber(total)}</strong></td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUtilitiesPage();
+        });
+    </script>
+</body>
+</html>

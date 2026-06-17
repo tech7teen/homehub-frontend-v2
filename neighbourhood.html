@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - HomeHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 0 var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                <a href="index.html" class="logo-brand">HomeHub</a>
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- Populated by JavaScript -->
+            </nav>
+        </aside>
+
+        <!-- Top Navigation -->
+        <header class="top-nav-bar">
+            <h1 style="margin: 0;">Community</h1>
+            <div class="flex-between gap-md">
+                <button class="btn btn-secondary btn-small" onclick="alert('Notifications (Future)')">🔔</button>
+                <button class="btn btn-secondary btn-small" onclick="navigateTo('settings')">👤</button>
+                <button class="btn btn-secondary btn-small" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Page Header -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <h2>Community Hub</h2>
+                    <p style="color: var(--color-text-secondary);">Connect with neighbors, share updates, find lost items & more</p>
+                </div>
+
+                <!-- Filter Tabs -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <div style="display: flex; gap: var(--spacing-md); overflow-x: auto; padding-bottom: var(--spacing-md);">
+                        <button class="btn btn-secondary" onclick="filterPosts('all')" id="filter-all">All Posts</button>
+                        <button class="btn btn-secondary" onclick="filterPosts('alert')">🚨 Alerts</button>
+                        <button class="btn btn-secondary" onclick="filterPosts('event')">🎉 Events</button>
+                        <button class="btn btn-secondary" onclick="filterPosts('recommendation')">⭐ Recommendations</button>
+                        <button class="btn btn-secondary" onclick="filterPosts('lost_found')">🔍 Lost & Found</button>
+                        <button class="btn btn-secondary" onclick="filterPosts('marketplace')">🛍️ Marketplace</button>
+                        <button class="btn btn-secondary" onclick="filterPosts('announcement')">📢 Announcements</button>
+                    </div>
+                </section>
+
+                <!-- Create Post (Tenant/Homeowner only) -->
+                <section style="margin-bottom: var(--spacing-xl);" id="create-post-section" style="display: none;">
+                    <div class="card">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Share with Your Community</h3>
+                        <form style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                            <div class="form-group">
+                                <label for="post-type">Post Type</label>
+                                <select id="post-type">
+                                    <option value="">Select type</option>
+                                    <option value="alert">🚨 Security Alert</option>
+                                    <option value="event">🎉 Event</option>
+                                    <option value="recommendation">⭐ Recommendation</option>
+                                    <option value="tip">💡 Tip</option>
+                                    <option value="lost_found">🔍 Lost & Found</option>
+                                    <option value="marketplace">🛍️ For Sale</option>
+                                    <option value="announcement">📢 Announcement</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="post-title">Title</label>
+                                <input type="text" id="post-title" placeholder="e.g., Water Maintenance Tomorrow">
+                            </div>
+                            <div class="form-group">
+                                <label for="post-content">Message</label>
+                                <textarea id="post-content" placeholder="Share details with your building..." style="height: 100px;"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" onclick="handlePostSubmit(event)">Post to Community</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Community Feed -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <div id="community-feed">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Building Members Highlight -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Building Members</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">24 residents in your building</p>
+                    <div id="building-members" class="grid grid-4 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Events Calendar -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Upcoming Events</h3>
+                    <div id="events-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Marketplace Listings -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">🛍️ Marketplace</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">Items for sale from building residents</p>
+                    <div id="marketplace-items" class="grid grid-3 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Lost & Found -->
+                <section style="margin-bottom: var(--spacing-xl);">
+                    <h3 style="margin-bottom: var(--spacing-lg);">🔍 Lost & Found</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">Help neighbors find their lost items</p>
+                    <div id="lost-found-items" class="grid grid-3 gap-lg">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        let currentFilter = 'all';
+
+        /**
+         * Load neighbourhood page
+         */
+        function loadNeighbourhoodPage() {
+            const role = AuthManager.getRole();
+            protectDashboard(role);
+
+            initializeSidebar(role);
+            
+            // Show create post for tenant/homeowner
+            if (role === 'tenant' || role === 'homeowner') {
+                document.getElementById('create-post-section').style.display = 'block';
+            }
+
+            // Load all content
+            loadCommunityFeed();
+            loadBuildingMembers();
+            loadEvents();
+            loadMarketplace();
+            loadLostFound();
+        }
+
+        /**
+         * Initialize sidebar based on role
+         */
+        function initializeSidebar(role) {
+            const nav = document.getElementById('sidebar-nav');
+            let html = '';
+
+            if (role === 'tenant') {
+                html = `
+                    <a href="dashboard-tenant.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💳</span> Pay Rent
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link active">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'homeowner') {
+                html = `
+                    <a href="dashboard-homeowner.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="utilities.html" class="nav-link">
+                        <span class="nav-icon">💡</span> Utilities
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link active">
+                        <span class="nav-icon">🏘️</span> Community
+                    </a>
+                    <a href="services.html" class="nav-link">
+                        <span class="nav-icon">🏪</span> Services
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            } else if (role === 'landlord') {
+                html = `
+                    <a href="dashboard-landlord.html" class="nav-link">
+                        <span class="nav-icon">🏠</span> Dashboard
+                    </a>
+                    <a href="payments.html" class="nav-link">
+                        <span class="nav-icon">💰</span> Collections
+                    </a>
+                    <a href="maintenance.html" class="nav-link">
+                        <span class="nav-icon">🔧</span> Maintenance
+                    </a>
+                    <a href="neighbourhood.html" class="nav-link active">
+                        <span class="nav-icon">📧</span> Communications
+                    </a>
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span> Settings
+                    </a>
+                `;
+            }
+
+            nav.innerHTML = html;
+        }
+
+        /**
+         * Load community feed
+         */
+        function loadCommunityFeed() {
+            const feed = document.getElementById('community-feed');
+            const data = mockCommunityData.posts;
+
+            let filteredPosts = currentFilter === 'all' ? data : data.filter(p => p.type.toLowerCase() === currentFilter);
+
+            let html = '';
+            filteredPosts.forEach(post => {
+                const postType = getPostTypeInfo(post.type);
+                const timeAgo = getTimeAgo(post.timestamp);
+
+                html += `
+                    <div class="card" style="margin-bottom: var(--spacing-lg);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div style="display: flex; gap: var(--spacing-md);">
+                                <span style="font-size: 1.5em;">${postType.icon}</span>
+                                <div>
+                                    <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
+                                        <h4 style="margin: 0;">${post.author}</h4>
+                                        <span class="badge badge-primary" style="font-size: 0.75em;">${post.type}</span>
+                                    </div>
+                                    <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0 0 0;">
+                                        ${timeAgo}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 style="margin: var(--spacing-md) 0;">${post.title}</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                            ${post.content}
+                        </p>
+                        ${post.eventDate ? `
+                            <div style="background: var(--color-accent-light); padding: var(--spacing-md); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-md);">
+                                <p style="font-weight: bold; margin: 0;">📅 ${formatDate(post.eventDate)} at ${post.eventTime}</p>
+                            </div>
+                        ` : ''}
+                        <div style="display: flex; justify-content: space-between; padding-top: var(--spacing-md); border-top: 1px solid var(--color-border);">
+                            <div style="display: flex; gap: var(--spacing-lg); font-size: 0.9em;">
+                                <button style="background: none; border: none; cursor: pointer; color: var(--color-text-secondary);">
+                                    👍 ${post.likes || 0} Likes
+                                </button>
+                                <button style="background: none; border: none; cursor: pointer; color: var(--color-text-secondary);">
+                                    💬 ${post.comments || 0} Comments
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            feed.innerHTML = html || '<p style="color: var(--color-text-secondary);">No posts found</p>';
+        }
+
+        /**
+         * Filter posts by type
+         */
+        function filterPosts(type) {
+            currentFilter = type;
+            
+            // Update active button
+            document.querySelectorAll('button[onclick^="filterPosts"]').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+            });
+            
+            event.target.classList.add('active');
+            event.target.style.backgroundColor = 'var(--color-accent)';
+            event.target.style.color = 'white';
+
+            loadCommunityFeed();
+        }
+
+        /**
+         * Load building members
+         */
+        function loadBuildingMembers() {
+            const section = document.getElementById('building-members');
+            const members = [
+                { name: 'Sarah Mwangi', unit: '305', role: 'Tenant', connections: 12 },
+                { name: 'James Kipchoge', unit: '402', role: 'Homeowner', connections: 8 },
+                { name: 'Peter Otieno', unit: '201', role: 'Tenant', connections: 5 },
+                { name: 'Amina Hassan', unit: '105', role: 'Tenant', connections: 15 },
+                { name: 'David Ochieng', unit: '508', role: 'Homeowner', connections: 9 },
+                { name: 'Grace Kariuki', unit: 'Manager', role: 'Building Manager', connections: 20 },
+                { name: 'Lucy Kipchoge', unit: '203', role: 'Tenant', connections: 6 },
+                { name: 'Mike Njoroge', unit: '410', role: 'Homeowner', connections: 11 }
+            ];
+
+            let html = '';
+            members.forEach(member => {
+                html += `
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: var(--spacing-md);">👤</div>
+                        <h4 style="margin: var(--spacing-sm) 0;">${member.name}</h4>
+                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-xs) 0;">
+                            Unit ${member.unit} • ${member.role}
+                        </p>
+                        <p style="color: var(--color-accent); font-weight: bold; margin: var(--spacing-md) 0;">
+                            ${member.connections} connections
+                        </p>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load events
+         */
+        function loadEventsSection(events) {
+            const section = document.getElementById('events-list');
+            
+            let html = '';
+            events.forEach(event => {
+                html += `
+                    <div class="card" style="margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <h4 style="margin: 0;">${event.title}</h4>
+                            <span class="badge badge-info">Upcoming</span>
+                        </div>
+                        <p style="margin: var(--spacing-md) 0; color: var(--color-text-secondary);">
+                            📅 ${formatDate(event.date)}<br>
+                            🕐 ${event.time}<br>
+                            📍 ${event.location}
+                        </p>
+                        <p style="margin: var(--spacing-md) 0;">${event.description}</p>
+                        <div style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md);">
+                            <button class="btn btn-primary btn-small" onclick="alert('RSVP feature - API integration needed')">
+                                RSVP (${event.rsvpCount} attending)
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load marketplace items
+         */
+        function loadMarketplaceItems(items) {
+            const section = document.getElementById('marketplace-items');
+            
+            const marketplaceItems = [
+                { title: 'Dining Table', price: 'KES 8,000', condition: 'Like new', seller: 'James K.' },
+                { title: 'Standing Fan', price: 'KES 2,500', condition: 'Good', seller: 'Sarah M.' },
+                { title: 'Microwave', price: 'KES 4,500', condition: 'Good', seller: 'Peter O.' }
+            ];
+
+            let html = '';
+            marketplaceItems.forEach(item => {
+                html += `
+                    <div class="card">
+                        <div style="background: var(--color-bg); height: 150px; border-radius: var(--border-radius-md); margin-bottom: var(--spacing-md); display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+                            🛋️
+                        </div>
+                        <h4 style="margin: var(--spacing-sm) 0;">${item.title}</h4>
+                        <p style="color: var(--color-accent); font-weight: bold; font-size: 1.2em; margin: var(--spacing-sm) 0;">
+                            ${item.price}
+                        </p>
+                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: 0;">
+                            ${item.condition} • Seller: ${item.seller}
+                        </p>
+                        <button class="btn btn-primary btn-small btn-full" style="margin-top: var(--spacing-md);">
+                            Message Seller
+                        </button>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Load lost & found items
+         */
+        function loadLostFoundItems(items) {
+            const section = document.getElementById('lost-found-items');
+            
+            const lostItems = [
+                { title: 'Lost: Black Wallet', description: 'Lost near main entrance on 15th', status: 'Missing', reporter: 'David O.' },
+                { title: 'Found: House Key', description: 'Found at gym area, key #42', status: 'Found', reporter: 'Grace K.' },
+                { title: 'Lost: Golden Watch', description: 'Sentimental value, lost 10th-12th', status: 'Missing', reporter: 'Amina H.' }
+            ];
+
+            let html = '';
+            lostItems.forEach(item => {
+                const badgeClass = item.status === 'Missing' ? 'badge-error' : 'badge-success';
+                const icon = item.status === 'Missing' ? '❌' : '✅';
+
+                html += `
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <span style="font-size: 2rem;">${item.title.includes('Lost') ? '❌' : '✅'}</span>
+                            <span class="badge ${badgeClass}">${item.status}</span>
+                        </div>
+                        <h4 style="margin: var(--spacing-sm) 0;">${item.title}</h4>
+                        <p style="color: var(--color-text-secondary); font-size: 0.9em; margin: var(--spacing-sm) 0;">
+                            ${item.description}
+                        </p>
+                        <p style="color: var(--color-text-secondary); font-size: 0.85em; margin: 0;">
+                            Posted by: ${item.reporter}
+                        </p>
+                        <button class="btn btn-secondary btn-small btn-full" style="margin-top: var(--spacing-md);">
+                            ${item.status === 'Missing' ? 'Help Find' : 'Claim Item'}
+                        </button>
+                    </div>
+                `;
+            });
+
+            section.innerHTML = html;
+        }
+
+        /**
+         * Wrapper functions
+         */
+        function loadEvents() {
+            loadEventsSection(mockCommunityData.events);
+        }
+
+        function loadMarketplace() {
+            loadMarketplaceItems([]);
+        }
+
+        function loadLostFound() {
+            loadLostFoundItems([]);
+        }
+
+        /**
+         * Handle post submission
+         */
+        function handlePostSubmit(event) {
+            event.preventDefault();
+            
+            const type = document.getElementById('post-type').value;
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+
+            if (!type || !title) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            alert('✓ Posted successfully!\nYour post has been shared with the community.');
+            
+            // Reset form
+            document.getElementById('post-type').value = '';
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNeighbourhoodPage();
+        });
+    </script>
+</body>
+</html>
